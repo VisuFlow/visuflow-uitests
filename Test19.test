@@ -1,0 +1,91 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: Test19
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _FIi40BKOEeeWDM4Q2YTK8w
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 3/27/17 8:39 AM
+Testcase-Type: ecl
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Failed Test: Navigate from Target code to CFG
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-button "Open Perspective" | click
+with [get-window "Open Perspective"] {
+    get-table | select Visuflow
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    with [get-tree] {
+        select "Visuflow/CFG" | key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results"
+        key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results" "Visuflow/Unit Inspection View"
+    }
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    get-tree | select "General/Project Explorer"
+    get-button OK | click
+}
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\TaintProject\\TaintProject"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\visuflow-workspace\\VisuFlowSheet1"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-button "Link Target Project" | click
+with [get-window "Link Analysis and Target Project"] {
+    get-button "Browse..." | click
+    with [get-window "Folder Selection"] {
+        get-tree | select VisuFlowSheet1
+        get-button OK | click
+    }
+    get-button "Browse..." -after [get-label "Choose Target Project:"] | click
+    with [get-window "Folder Selection"] {
+        get-tree | select TaintProject
+        get-button OK | click
+    }
+    get-button Apply | click
+}
+with [get-view "Project Explorer" | get-tree] {
+    select VisuFlowSheet1 | get-menu "Configure/Disable Jimple Builder" | click
+    select VisuFlowSheet1 | get-menu "Configure/Enable Jimple Builder" | click
+}
+get-view CFG | click
+get-view "Project Explorer" | get-tree | select "TaintProject/src/de.visuflow.analyzeMe.ex2/TargetClass2.java" 
+    | double-click
+with [get-editor "TargetClass2.java" | get-canvas -index 1] {
+    get-menu "Navigate To CFG" | get-property caption | equals "Navigate To CFG" | verify-true
+    get-menu "Navigate To CFG" | get-property selection | equals true | verify-true
+}
+with [get-editor "TargetClass2.java" | get-left-ruler] {
+    get-ruler-column LineNumberColumn | click-ruler -line 81 -button Right
+    get-menu "Navigate To CFG" | click
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

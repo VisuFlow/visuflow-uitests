@@ -1,0 +1,114 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: Test16
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _SUCxIBKLEeeWDM4Q2YTK8w
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 3/27/17 8:38 AM
+Testcase-Type: ecl
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Failed Test: Navigate from Results View to CFG
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-button "Open Perspective" | get-property selected | equals false | verify-true
+get-button "Open Perspective" | click
+get-window "Open Perspective" | get-table | get-item Visuflow | get-property selected | equals false | verify-true
+with [get-window "Open Perspective"] {
+    get-table | select Visuflow
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    with [get-tree] {
+        select "Visuflow/CFG" | key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results"
+        key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results" "Visuflow/Unit Inspection View"
+    }
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    get-tree | select "General/Project Explorer"
+    get-button OK | click
+}
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\TaintProject\\TaintProject"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\visuflow-workspace\\VisuFlowSheet1"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-button "Link Target Project" | get-property selected | equals false | verify-true
+get-button "Link Target Project" | click
+with [get-window "Link Analysis and Target Project"] {
+    get-button "Browse..." | click
+    with [get-window "Folder Selection"] {
+        get-tree | select VisuFlowSheet1
+        get-button OK | click
+    }
+    get-button "Browse..." -after [get-label "Choose Target Project:"] | click
+    with [get-window "Folder Selection"] {
+        get-tree | select TaintProject
+        get-button OK | click
+    }
+    get-button Apply | click
+}
+with [get-view "Project Explorer" | get-tree] {
+    select VisuFlowSheet1 | get-menu "Configure/Disable Jimple Builder" | click
+    select VisuFlowSheet1 | get-menu "Configure/Enable Jimple Builder" | click
+}
+get-view CFG | click
+with [get-view Results] {
+    click
+    get-button "Highlight selected nodes on graph" | check
+}
+with [get-view "Unit Inspection View"] {
+    click
+    get-button "Sync with Graph View" | check
+}
+with [get-view "Unit Inspection View" | get-tree] {
+    get-menu "View in CFG" | get-property caption | equals "View in CFG" | verify-true
+    get-menu "View in CFG" | get-property selection | equals false | verify-true
+}
+get-view "Unit Inspection View" | get-tree 
+    | select "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: java.lang.String notTainted> = \"foobar\"" 
+    | get-menu "View in CFG" | click
+with [get-view Results] {
+    click
+    get-table | get-item "r1 := @parameter0: de.visuflow.analyzeMe.ex2.TargetClass2" -column Unit | check
+}
+with [get-view Results | get-table] {
+    get-item "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: java.lang.String notTainted> = \"foobar\"" 
+        -column Unit | get-property caption | equals "" | verify-true
+    get-item "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: java.lang.String notTainted> = \"foobar\"" 
+        -column Unit | get-property selection | equals true | verify-true
+    get-item "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: java.lang.String notTainted> = \"foobar\"" 
+        -column Unit | get-property checked | equals false | verify-true
+}
+get-view Results | get-table 
+    | get-item "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: java.lang.String notTainted> = \"foobar\"" 
+    -column Unit | check  
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
