@@ -6,6 +6,96 @@ Element-Version: 3.0
 External-Reference: 
 Id: _FtdJkBhpEeeDmcx1Jt-Dcw
 Runtime-Version: 2.1.0.201606221726
-Save-Time: 4/3/17 2:28 PM
+Save-Time: 4/3/17 2:44 PM
 Testcase-Type: ecl
 
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Highlight selected nodes on graph
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-button "Open Perspective" | get-property selected | equals false | verify-true
+get-button "Open Perspective" | click
+get-window "Open Perspective" | get-table | get-item Visuflow | get-property selected | equals false | verify-true
+with [get-window "Open Perspective"] {
+    get-table | select Visuflow
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    with [get-tree] {
+        select "Visuflow/CFG" | key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results"
+        key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results" "Visuflow/Unit Inspection View"
+    }
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    get-tree | select "General/Project Explorer"
+    get-button OK | click
+}
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\TaintProject\\TaintProject"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\visuflow-workspace\\VisuFlowSheet1"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-button "Link Target Project" | get-property selected | equals false | verify-true
+get-button "Link Target Project" | click
+with [get-window "Link Analysis and Target Project"] {
+    get-button "Browse..." | click
+    with [get-window "Folder Selection"] {
+        get-tree | select VisuFlowSheet1
+        get-button OK | click
+    }
+    get-button "Browse..." -after [get-label "Choose Target Project:"] | click
+    with [get-window "Folder Selection"] {
+        get-tree | select TaintProject
+        get-button OK | click
+    }
+    get-button Apply | click
+}
+get-button "Run Builder" | click
+get-view CFG | click
+with [get-view "Unit Inspection View"] {
+    click
+    get-button "Sync with Graph View" | check
+    get-tree 
+        | select "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: de.visuflow.analyzeMe.ex2.TargetClass2 this$0> = r1" 
+        | get-menu "View in CFG" | click
+}
+get-view "Unit Inspection View" | get-button "Sync with Graph View" | get-property selected | equals true | verify-true
+get-view Results | click
+with [get-view Results | get-table] {
+    get-item "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: de.visuflow.analyzeMe.ex2.TargetClass2 this$0> = r1" 
+        -column Unit | get-property selected | equals false | verify-true
+    get-item "r0.<de.visuflow.analyzeMe.ex2.TargetClass2$Container: de.visuflow.analyzeMe.ex2.TargetClass2 this$0> = r1" 
+        -column Unit | get-property checked | equals false | verify-true
+}
+get-view Results | get-button "Highlight selected nodes on graph" | get-property selected | equals false | verify-true
+with [get-view Results] {
+    get-button "Highlight selected nodes on graph" | check
+    click
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
