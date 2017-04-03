@@ -1,0 +1,87 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: Test27
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _iliRsBh1Eee7rvT4cejRLg
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 4/3/17 4:02 PM
+Testcase-Type: ecl
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Setting Analysis wizard
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-menu "File/Import..." | click
+with [get-window Import] {
+    get-tree | select "General/Existing Projects into Workspace"
+    get-button "Next >" | click
+}
+set-dialog-result Folder "C:\\Users\\ram\\Downloads\\TaintProject\\TaintProject"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-menu "File/New/Other..." | click
+with [get-window New] {
+    get-tree | select "Other/New Analysis Project"
+    get-button "Next >" | click
+}
+with [get-window -class WizardDialog] {
+    with [get-editbox -after [get-label "Name of the Project:"]] {
+        set-text Visuflow
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label "Package:"]] {
+        set-text "de.visuflow"
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label "Class Name:"]] {
+        set-text analysis
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    get-button "Browse..." | click
+    with [get-window "Folder Selection"] {
+        get-tree | select TaintProject
+        get-button OK | click
+    }
+    get-button "Next >" | click
+    get-combo -after [get-label "Analysis Framework:"] | select Soot
+    get-combo -after [get-label "Analysis Type:"] | select "Intra Procedural Analysis"
+    get-combo -after [get-label "Input/Output Flow sets:"] | select Set
+    get-combo -after [get-label "Input/Output Flow sets:"] -index 1 | select Double
+}
+set-dialog-result File "C:\\Users\\ram\\git\\visuflow-plugin\\lib\\soot-trunk.jar"
+with [get-window -class WizardDialog] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+get-button "Open Perspective" | click
+with [get-window "Open Perspective"] {
+    get-table | select Visuflow
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    with [get-tree] {
+        select "Visuflow/CFG" | key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results"
+        key-type "M2+ARROW_DOWN"
+        select "Visuflow/CFG" "Visuflow/Results" "Visuflow/Unit Inspection View"
+    }
+    get-button OK | click
+}
+get-menu "Window/Show View/Other..." | click
+with [get-window "Show View"] {
+    get-tree | select "General/Project Explorer"
+    get-button OK | click
+}
+get-view CFG | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
